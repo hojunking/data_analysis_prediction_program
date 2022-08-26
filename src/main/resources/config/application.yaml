@@ -1,0 +1,19 @@
+server:
+   port: 80
+
+spring:
+   datasource:
+      jdbc-url: jdbc:sqlite:./DB/education_database.db
+      username:
+      password:
+      driver-class-name: org.sqlite.JDBC
+   thymeleaf:
+      prefix: classpath:templates
+      check-template: true
+      check-template-location: true
+      suffix: .html
+      mode: HTML
+      encoding: UTF-8
+      cache: false
+      enabled: true
+     

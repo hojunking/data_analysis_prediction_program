@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+	<head>
+		<meta charset="utf-8">
+		
+		<link href="/vendor/bootstrap-5.2.0-dist/css/bootstrap.min.css" rel="stylesheet" />
+        <script src="/vendor/bootstrap-5.2.0-dist/js/bootstrap.bundle.min.js"></script>
+        
+       <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+	</head>
+	
+	<body>
+		<nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
+		  <div class="container-fluid">
+		    <a class="navbar-brand" href="#">KNU 교육</a>
+		    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+		      <span class="navbar-toggler-icon"></span>
+		    </button>
+		    <div class="collapse navbar-collapse" id="navbarCollapse">
+		      <ul class="navbar-nav me-auto mb-2 mb-md-0">
+		        <li class="nav-item">
+		          <a class="nav-link" aria-current="page" href="/selectMember">회원정보</a>
+		        </li>
+		        <li class="nav-item">
+		          <a class="nav-link" href="/fileUpload">파일업로드</a>
+		        </li>
+		        <li class="nav-item">
+		          <a class="nav-link" href="/selectWekaFile">분석</a>
+		        </li>
+		      </ul>
+		    </div>
+		  </div>
+		</nav>
+		
+		<div class="container">
+		  <div id="layoutAuthentication">
+            <div id="layoutAuthentication_content">
+                <main>
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-5">
+                                <div class="card shadow-lg border-0 rounded-lg mt-5">
+                                    <div class="card-header"><h3 class="text-center font-weight-light my-4">로그인</h3></div>
+                                    <div class="card-body">
+                                        <form id="MAIN_FORM" name="MAIN_FORM">
+                                            <div class="form-floating mb-3">
+                                                <input class="form-control" id="MEMBER_ID" name="MEMBER_ID" type="email" placeholder="아이디를 입력해주세요." />
+                                                <label for="MEMBER_ID">ID</label>
+                                            </div>
+                                            <div class="form-floating mb-3">
+                                                <input class="form-control" id="MEMBER_PASSWORD" name="MEMBER_PASSWORD" type="password" placeholder="패스워드를 입력해주세요." />
+                                                <label for="MEMBER_PASSWORD">PASSWORD</label>
+                                            </div>
+                                            <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
+                                                <a class="btn btn-primary" id="loginProcess">LOGIN</a>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="card-footer text-center py-3">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+            </div>
+          </div>
+		  
+		  <footer class="py-3 my-4">
+		    <p class="text-center text-muted">&copy; 2022 Company, Inc</p>
+		  </footer>
+		</div>
+	</body>
+	
+	<script>
+		$(document).ready(function() {
+	    	$('#loginProcess').click(function() {
+	    		
+	    		$.ajax({
+	    			type : 'post'
+			    	, url : '/loginProcess'
+			    	, processData: false
+			        , contentType: false
+			    	, data : new FormData($('form[name=MAIN_FORM]')[0])
+			        , cache : false
+					, async : true
+			        , dataType : 'json'
+			        , beforeSend : 
+			        	function() {
+			        	
+			        	
+							if ($('#MEMBER_ID').val() == "") {$('#MEMBER_ID').focus(); alert("아이디를 입력해주세요."); return false;  }
+							if ($('#MEMBER_PASSWORD').val() == "") {$('#MEMBER_PASSWORD').focus(); alert("패스워드를 입력해주세요."); return false; }
+							
+							return true;
+						}
+			        , success : 
+			        	function(data) {
+			        		if(data.resultCode == "0000") {
+			        			location.href = "/selectMember";
+			        		} else {
+			        			alert(data.resultNote);
+			        		}
+			        	}
+			        , error : 
+			        	function(data) {
+			        		alert("죄송합니다.\n인터넷이 끊어지셨거나 서버에서 장애가 발생하였습니다.\n잠시후 다시 시도해주세요.");
+			        	}
+			        , clearForm : false
+			        , resetForm : false
+			        , timeout : 60000
+	            });
+	    	});
+		});
+	</script>
+</html>

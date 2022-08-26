@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+	<head>
+		<meta charset="utf-8">
+		
+		<link href="/vendor/bootstrap-5.2.0-dist/css/bootstrap.min.css" rel="stylesheet" />
+        <script src="/vendor/bootstrap-5.2.0-dist/js/bootstrap.bundle.min.js"></script>
+        
+        <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+	</head>
+	
+	<body>
+		<nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
+		  <div class="container-fluid">
+		    <a class="navbar-brand" href="#">KNU 교육</a>
+		    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+		      <span class="navbar-toggler-icon"></span>
+		    </button>
+		    <div class="collapse navbar-collapse" id="navbarCollapse">
+		      <ul class="navbar-nav me-auto mb-2 mb-md-0">
+		        <li class="nav-item">
+		          <a class="nav-link" aria-current="page" href="/selectMember">회원정보</a>
+		        </li>
+		        <li class="nav-item">
+		          <a class="nav-link" href="/fileUpload">파일업로드</a>
+		        </li>
+		        <li class="nav-item">
+		          <a class="nav-link active" href="/selectWekaFile">분석</a>
+		        </li>
+		      </ul>
+		    </div>
+		  </div>
+		</nav>
+		
+		<div class="container">
+		  
+		  <!-- 
+		  selectMember 데이터 출력
+		   -->
+		  
+		  
+			<table class="table">
+		        <tbody>
+		        	<th:block th:if="${#lists.isEmpty(selectWekaFile)}">
+					<tr>
+						<td>등록된 분석파일이 없습니다.</td>
+					</tr>
+					</th:block>
+					<th:block th:if="${selectWekaFile != null and !selectWekaFile.empty}">
+					<tr th:each="selectWekaFileMap,index:${selectWekaFile}">
+						<td th:text="${selectWekaFileMap.WEKA_NO}"></td>
+						<td th:text="${selectWekaFileMap.WEKADATANAME}"></td>
+						<td th:text="${selectWekaFileMap.WEKAFILENAME}"></td>
+						<td th:text="${selectWekaFileMap.WEKA_Y}"></td>
+						<td><button class="btn btn-outline-dark" th:id="'goProcess_'+${selectWekaFileMap.WEKA_NO}">분석</button></td>
+					</tr>
+					</th:block>
+		        </tbody>
+		   </table>
+		   
+		   
+		   <div id="result">
+	   		
+	   	   </div>
+		  		  
+		  <footer class="py-3 my-4">
+		    <p class="text-center text-muted">&copy; 2022 Company, Inc</p>
+		  </footer>
+		</div>
+	</body>
+	
+	<script>
+	$(document).ready(function() {
+		$("button[id^='goProcess']").click(function(){
+			var idValues = $(this).attr("id").split("_");
+			
+			$.ajax({
+    			type : 'post'
+		    	, url : '/wekaProcess'
+		    	, data : "WEKA_NO="+idValues[1]
+		        , cache : false
+				, async : true
+		        , dataType : 'json'
+		        , beforeSend : 
+		        	function() {
+		        	
+						return true;
+					}
+		        , success : 
+		        	function(data) {
+		        		if(data.RESULT_CODE == "0000") {
+		        			
+		        			$("#result").html(
+		        				"전체 데이터 수 = " + data.DATA_COUNT + "<br/>" +
+		        				"정분류 수 = " + data.CORRECT_COUNT + "<br/>" +
+		        				"오분류 수 = " + data.INCORRECT_COUNT + "<br/>" +
+		        				data.ALL
+		        			);		
+		        		} else {
+		        		}
+		        	}
+		        , error : 
+		        	function(data) {
+		        		alert("죄송합니다.\n인터넷이 끊어지셨거나 서버에서 장애가 발생하였습니다.\n잠시후 다시 시도해주세요.");
+		        	}
+		        , clearForm : false
+		        , resetForm : false
+		        , timeout : 60000
+            });
+		});
+	});
+	</script>
+</html>

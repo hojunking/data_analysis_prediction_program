@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="education_program.web.mapper.TbMemberMapper">
+		
+	<resultMap type="java.util.HashMap" id="memberMap">
+		<result column="MEMBER_NAME" property="MEMBER_NAME" />
+		<result column="MEMBER_ID" property="MEMBER_ID" />
+		<result column="MEMBER_PASSWORD" property="MEMBER_PASSWORD" />
+	</resultMap>
+	
+	<select id="selectMember" parameterType="hashmap" resultMap="memberMap">
+		SELECT 
+			MEMBER_NAME
+			, MEMBER_ID
+			, MEMBER_PASSWORD
+		FROM 
+			TB_MEMBER
+	</select>
+	
+	<select id="selectMemberCheck" parameterType="hashmap" resultMap="memberMap">
+		SELECT 
+			MEMBER_NAME
+			, MEMBER_ID
+			, MEMBER_PASSWORD
+		FROM 
+			TB_MEMBER
+		WHERE
+			MEMBER_ID = #{MEMBER_ID}
+			AND MEMBER_PASSWORD = #{MEMBER_PASSWORD}
+	</select>
+	
+	<select id="selectMemberInfo" parameterType="hashmap" resultMap="memberMap">
+		SELECT 
+			MEMBER_NAME
+			, MEMBER_ID
+			, MEMBER_PASSWORD
+		FROM 
+			TB_MEMBER
+		WHERE
+			MEMBER_ID = #{MEMBER_ID}
+	</select>
+</mapper>

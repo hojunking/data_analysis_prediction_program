@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="education_program.web.mapper.TbWekaFileMapper">
+		
+	<resultMap type="java.util.HashMap" id="wekafileMap">
+		<result column="WEKA_NO" property="WEKA_NO" />
+		<result column="WEKADATANAME" property="WEKADATANAME" />
+		<result column="WEKAFILENAME" property="WEKAFILENAME" />
+		<result column="WEKA_Y" property="WEKA_Y" />
+	</resultMap>
+	
+	<select id="selectWekaFile" parameterType="hashmap" resultMap="wekafileMap">
+		SELECT
+			WEKA_NO
+			, WEKADATANAME
+			, WEKAFILENAME
+			, WEKA_Y
+		FROM 
+			TB_WEKAFILE
+	</select>
+	
+	<select id="selectWekaFileInfo" parameterType="hashmap" resultMap="wekafileMap">
+		SELECT
+			WEKA_NO
+			, WEKADATANAME
+			, WEKAFILENAME
+			, WEKA_Y
+		FROM 
+			TB_WEKAFILE
+		WHERE
+			WEKA_NO = #{WEKA_NO}
+	</select>
+	
+	<insert id="insertWekaFile" parameterType="hashmap">
+		INSERT INTO TB_WEKAFILE
+		(
+			WEKA_NO
+			, WEKADATANAME
+			, WEKAFILENAME
+			, WEKA_Y
+		)
+		VALUES 
+		(
+			(SELECT IFNULL(MAX(WEKA_NO),0) + 1 FROM TB_WEKAFILE)
+			, #{WEKADATANAME}
+			, #{WEKAFILENAME}
+			, #{WEKA_Y}
+		)
+	</insert>
+</mapper>

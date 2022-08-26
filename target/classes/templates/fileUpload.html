@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+	<head>
+		<meta charset="utf-8">
+		
+		<link href="/vendor/bootstrap-5.2.0-dist/css/bootstrap.min.css" rel="stylesheet" />
+        <script src="/vendor/bootstrap-5.2.0-dist/js/bootstrap.bundle.min.js"></script>
+        
+        <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+	</head>
+	
+	<body>
+		<nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
+		  <div class="container-fluid">
+		    <a class="navbar-brand" href="#">KNU 교육</a>
+		    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+		      <span class="navbar-toggler-icon"></span>
+		    </button>
+		    <div class="collapse navbar-collapse" id="navbarCollapse">
+		      <ul class="navbar-nav me-auto mb-2 mb-md-0">
+		        <li class="nav-item">
+		          <a class="nav-link" aria-current="page" href="/selectMember">회원정보</a>
+		        </li>
+		        <li class="nav-item">
+		          <a class="nav-link active" href="/fileUpload">파일업로드</a>
+		        </li>
+		        <li class="nav-item">
+		          <a class="nav-link" href="/selectWekaFile">분석</a>
+		        </li>
+		      </ul>
+		    </div>
+		  </div>
+		</nav>
+		
+		<div class="container">
+		  
+		  
+		  <form id="mainForm" name="mainForm">
+		  
+		  <div class="mb-3">
+			 <label for="formFile" class="form-label">WEKA 데이터 명</label>
+			 <input class="form-control" type="text" id="WEKADATANAME" name="WEKADATANAME">
+		  </div>
+		  
+		  <div class="mb-3">
+			 <label for="formFile" class="form-label">WEKA 종속변수 위치</label>
+			 <input class="form-control" type="text" id="WEKA_Y" name="WEKA_Y">
+		  </div>
+		  
+		  <div class="mb-3">
+			 <label for="formFile" class="form-label">WEKA FILE 업로드</label>
+			 <input class="form-control" type="file" id="WEKAFILENAME" name="WEKAFILENAME">
+		  </div>
+		  
+          <div class="mt-4">
+              <a class="btn btn-primary" id="fileUploadProcess">파일업로드</a>
+          </div>
+		  </form>
+		  
+		  <footer class="py-3 my-4">
+		    <p class="text-center text-muted">&copy; 2022 Company, Inc</p>
+		  </footer>
+		</div>
+	</body>
+	
+	<script>
+	$(document).ready(function() {
+		$("#fileUploadProcess").click(function() {	 	
+	    	$.ajax({
+    			type : "post"
+		    	, url : "/fileUploadProcess"	    
+		    	, processData: false
+		        , contentType: false
+		    	, data : new FormData($("form[name='mainForm']")[0])
+		        , cache : false
+				, async : true
+		        , dataType : "json"
+		        , beforeSend : 
+		        	function() {
+		        		//데이터 검사 로직
+		        		
+		        		if ($('#WEKADATANAME').val() == "") {$('#WEKADATANAME').focus(); alert("웨카데이터명을 입력해주세요."); return false;  }
+		        		if ($('#WEKA_Y').val() == "") {$('#WEKA_Y').focus(); alert("웨카 종속변수 위치를 입력해주세요."); return false;  }
+						if ($('#WEKAFILENAME').val() == "") {$('#WEKAFILENAME').focus(); alert("웨카파일을 선택해주세요."); return false; }
+							
+					    return true; 
+					}
+		        , success : 
+		        	function(data) {  	
+			        	if(data.resultCode == "0000") {
+			        		alert("저장 성공");
+				    	} else {
+				    		alert("저장 실패");
+				    	}
+					}
+		        , error : 
+		        	function(data) {
+		        		aler("죄송합니다.\n인터넷이 끊어지셨거나 서버에서 장애가 발생하였습니다.\n잠시후 다시 시도해주세요.");
+		        	}
+		        , clearForm : false
+		        , resetForm : false
+		        , timeout : 60000
+            }); 
+	    });
+	});
+	</script>
+	
+</html>
