@@ -1,7 +1,7 @@
-### Open Software based Data analysis and prediction program build
+### Open software based data analysis and prediction program build
 ---
- * 2022_Open Software_education_경북대학교_bigdata
- * Spring boot, Bootstrap, Mybatis, Thymeleaf, jar distribution
+ * 2022_open_software_education_경북대학교_bigdata
+ * Spring boot, bootstrap, mybatis, thymeleaf, jar distribution
  
     <img width="80%" src="https://user-images.githubusercontent.com/84840627/186913030-fbf9ea10-e9c1-4112-8ac7-c86af65a851d.jpg"/>
     
