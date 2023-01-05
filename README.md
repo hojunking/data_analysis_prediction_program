@@ -1,6 +1,6 @@
 ### Open software based data analysis and prediction program build
 ---
- * 2022_open_software_education_경북대학교_bigdata
+ * 2022_open_software_education_KNU_bigdata
  * Dev tools : spring boot, bootstrap, mybatis, thymeleaf, jar distribution  
  
     <img width="80%" src="https://user-images.githubusercontent.com/84840627/186912689-339864f5-93df-4c15-910c-68b845e95ddf.jpg"/>
